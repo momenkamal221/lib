@@ -1,0 +1,41 @@
+<?php
+$StoresBtnID = 'stores-b' . $book['book_id'] . '-bs' . $list['list_id'];
+if ($listedBook) {
+	$toPostBookBtnID = 'postbook-' . $book['book_id'] . '-l-' . $list['list_id'];
+} else {
+	$toPostBookBtnID = 'postbook-' . $book['book_id'];
+}
+?>
+<div class="book-c listed-book-c">
+	<div class="book-menu-btn">
+		<img src="<?php echo $styleImg . 'three-dots.svg' ?>" alt="" class="three-dots" />
+		<ol class="book-menu">
+
+			<?php
+			if (!$listedBook && $own) {
+				include $frontTpl .  'add-to-list-menu.phtml';
+				echo '<li><a href="./publishbook.php?id=' . $libID . '&bookid=' . $book['book_id'] . '">Edit</a></li>';
+			}
+			?>
+			<?php
+			if ($book['book_location']) {
+				echo '<li><a href="./read.php?id=' . $libID . '&bookid=' . $book['book_id'] . '">Read</a></li>';
+			}
+			?>
+			<li id="<?php echo $toPostBookBtnID ?>">post</li>
+			<li id="<?php echo $StoresBtnID ?>">Stores</li>
+			<li><a href="book.php?id=<?php echo $book['book_id'] ?>">info</a></li>
+			<?php
+			if ($listedBook && ownBook($conn,$book['book_id'])) {
+				$removeID = 'rm-b' . $book['book_id'] . '-bs' . $list['list_id'];
+				echo '<li id="' . $removeID . '">Remove</li>';
+				include $js . 'rm-book.js.phtml';
+			} ?>
+		</ol>
+	</div>
+	<img src="<?php echo $bookCover . $book['cover'] ?>" alt="" class="book-cover" />
+</div>
+<script>
+	document.getElementById('<?php echo $StoresBtnID ?>').addEventListener('click', () => getStores(<?php echo $book['book_id'] ?>));
+	document.getElementById('<?php echo $toPostBookBtnID ?>').addEventListener('click', () => togglePost('<?php echo $bookCover . $book['cover'] ?>', <?php echo $book['book_id'] ?>));
+</script>

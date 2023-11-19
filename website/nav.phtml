@@ -1,0 +1,138 @@
+<?php
+$notifications = fetch($conn, 'SELECT * FROM notifications WHERE to_lib_id = ' . $_SESSION['main_lib_id'] . ' ORDER BY noti_id DESC LIMIT '.$notificationsLimit.';');
+$myLibs = fetch($conn, 
+'SELECT lib_title,lib_id FROM libraries WHERE user_id 
+IN(SELECT user_id FROM libraries WHERE lib_id ='.getMainLib().') ORDER BY lib_id;');
+if(isset($lib)){
+	if(own($conn,$_GET['id']) && !main($conn,$_GET['id']))
+	for($i=0;$i<count($myLibs);$i++){
+		if($myLibs[$i]['lib_id']==$_GET['id']){
+			$temp=$myLibs[0];
+			$myLibs[0]=$myLibs[$i];
+			for($j=$i-1;$j>0;$j--){
+				$myLibs[$j+1]=$myLibs[$j];
+			}
+			$myLibs[1]=$temp;
+		}
+	}
+}
+?>
+</head>
+
+<body>
+	<div class="add-lib-layout display" id="storesLayout">
+		<div class="store-trans" id="storesTrans">
+		</div>
+		<div class="stores-c">
+			<div id="closeStoresForm">X</div>
+			<div class="stores-form">
+				<ol id="storesList">
+
+				</ol>
+			</div>
+		</div>
+	</div>
+	<div class="add-lib-layout display" id="postFormLayout">
+		<div class="store-trans" id="postFormTrans">
+		</div>
+		<div class="post-from-c">
+			<div id="closePostForm">X</div>
+			<h4>Create post</h4>
+			<form class="post-form">
+				<select id="postForm_myLibs" class="intxt" style="margin-bottom:10px">
+					<?php
+						foreach($myLibs as $mylib){
+							echo '<option  value="'.$mylib['lib_id'].'">'.$mylib['lib_title'].'</option>';
+						}
+					?>
+				</select>
+				<div class="post-content-c" id="postContent">
+					<div contenteditable type="text" class="intxt txt-area post-content" id="postContentTxt"></div>
+				</div>
+				<div class="post-btn" id="postBtn">Post</div>
+			</form>
+		</div>
+	</div>
+	<div class="add-lib-layout display" id="addLibLayout">
+		<div class="add-lib-trans" id="addLibLayoutTrans">
+		</div>
+		<div class="add-lib-c">
+			<div id="closeAddLibForm">X</div>
+			<div class="add-lib-form">
+				<input type="text" placeholder="Library title" name="Library title" id="libTitle" class="intxt">
+				<button type="button" id="createLibBtn">Create library</button>
+			</div>
+		</div>
+	</div>
+	<header>
+		<div class="header">
+			<div class="menu" id="menuBtn">
+				<div class="menu__bars-c">
+					<div class="bar1"></div>
+					<div class="bar2"></div>
+					<div class="bar3"></div>
+				</div>
+			</div>
+			<div class="top-corner-c">
+				<div class="logo-c">
+					<a href='./'><img src="<?php echo $styleImg . 'logo.png' ?>" alt="" class="logo" /></a>
+					<div class="add-lib-icon" id="addLibIcon">+</div>
+				</div>
+			</div>
+			<div class="s-search">
+				<input type="text" class="search-input intxt" id="sSearchKeyword" />
+				<div class="s-search-btn" id="sSearchBtn">
+					<i class="search-icon"></i>
+				</div>
+			</div>
+			<div class="search-btn" id="searchBtn">
+				<i class="search-icon"></i>
+			</div>
+			<div class="notifications">
+				<img class="bell" src="<?php echo $styleImg . 'bell.svg' ?>" alt="notifications" id="notifiBtn" />
+				<div class="notifications-red-dot display" id="notificationsDot"></div>
+				<div class="notifications-c display" id="notifications">
+					<?php
+					if ($notifications) {
+						foreach ($notifications as $notification) {
+							include $frontTpl . 'notification.phtml';
+						}
+					}
+					?>
+				</div>
+			</div>
+			<div class="my-lib">
+				<img src="
+					<?php
+					echo $libPics . getLibPic($conn, $_SESSION['main_lib_id']);
+					?>
+					" alt="" class="my-lib__img" />
+				<span class="my-lib__name">
+					<?php
+					echo getLibTitle($conn, $_SESSION['main_lib_id']);
+					?></span>
+				<ul class="my-lib_menu" id="myLibMenu">
+					<li id="logout">Logout</li>
+				</ul>
+			</div>
+		</div>
+		<nav>
+			<ul class="nav-menu">
+				<li><a href="library.php?id=<?php echo $_SESSION['main_lib_id'] ?>">My library</a></li>
+				<div>|</div>
+				<li><a href="library.php?id=<?php echo $_SESSION['main_lib_id'] . '&page=community' ?>">My community</a></li>
+			</ul>
+
+			<div class="m-search display" id="mSearch">
+				<input type="text" class="search-input intxt align-right" id="mSearchKeyword" />
+				<div class="search-btn m-search-btn algin-left" id="mSearchBtn">
+					<i class="search-icon"></i>
+				</div>
+			</div>
+		</nav>
+		<?php
+		if (isset($lib)) {
+			include $frontTpl . 'lib-nav.phtml';
+		}
+		?>
+	</header>

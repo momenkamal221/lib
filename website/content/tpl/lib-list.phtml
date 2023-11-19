@@ -1,0 +1,19 @@
+
+<?php 
+	$libID=$lib['lib_id'];
+	$Title=$lib['lib_title'];
+	$libPic='data/uploads/lib-pics/'.$lib['lib_pic'];
+	$main=($lib['main']==1)? true : false;
+
+?>
+<div class="lib">
+	<a href="library.php?id=<?php echo $libID ?>" id="lib" class="lib-frame">
+		<img src="<?php echo $libPic ?>" alt="" class="lib_pic" />
+		<span class="lib_name"><?php echo $Title ?></span>
+	</a>
+	<?php
+	if($main){
+		include $frontTpl . 'chat-btn.phtml';
+	}
+	?>
+</div>

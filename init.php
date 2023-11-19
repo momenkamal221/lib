@@ -1,0 +1,11 @@
+<?php
+$js='website/js/';
+$css='website/css/';
+$styleImg='website/images/';
+$libPics='data/uploads/lib-pics/';
+$libCovers='data/uploads/lib-covers/';
+$bookCover='data/uploads/book-covers/';
+$frontTpl='website/content/tpl/';
+$backTpl='includes/tpl/';
+$booksLocation='data/uploads/books/';
+$notificationsLimit=30;

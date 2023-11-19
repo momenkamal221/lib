@@ -1,0 +1,21 @@
+<?php
+$bss=getListsSimilarToList($conn,$_GET['id']);
+$own=false;
+?>
+<main style="margin-top: 240px;">
+	<?php
+	if($bss){
+		foreach($bss as $bs){
+			echo '<div class="bs-page__lib"><a href="library.php?id='.$bs['lib_id'].'" class="b-lib">
+			<img class="post__lib-img" src="data/uploads/lib-pics/'.$bs['lib_pic'].'" alt="library picture">
+			<div class="post__name">'.$bs['lib_title'].'</div>
+			</a></div>';
+			$list['title']=$bs['list_title'];
+			$list['list_id']=$bs['list_id'];
+			include $frontTpl . 'bookshelf.phtml';
+		}
+	}else{
+		echo '<div class="no-libs-found">No bookshelves found</div>';
+	}
+	?>
+</main>

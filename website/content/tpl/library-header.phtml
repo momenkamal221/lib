@@ -1,0 +1,52 @@
+<div class="lib-card">
+	<?php
+	if ($own)
+		include_once $frontTpl . 'edit-cover.phtml';
+	?>
+	<div class="lib-card__cover-c">
+		<img src="
+			<?php
+			echo  $libCover;
+			?>
+			" alt="" class="lib-card__cover">
+	</div>
+	<div class="lib-card__pic-c">
+		<?php
+		if ($own)
+			include_once $frontTpl . 'edit-pic.phtml';
+		?>
+		<div class="lib-car__pic-frame"><img src="
+			<?php
+			echo $libPic;
+			?>
+				" alt="" class="lib-card__pic"></div>
+	</div>
+	<div class="lib-card__title">
+		<a href="library.php?id=<?php echo $libID ?>">
+			<?php
+			echo $libTitle;
+			?>
+		</a>
+	</div>
+</div>
+<h3 class="library-heading">
+	<div class="readings-c">
+		<div>
+			<?php echo $lib['reading_count'] ?> readings
+		</div>
+		<div>
+			<?php echo $lib['readers_count'] ?> readers
+		</div>
+	</div>
+	<?php if (!$own) include $frontTpl . 'read-btn.phtml' ?>
+</h3>
+<h2 class="lib-header__title"><?php echo $libTitle . ' ' . $page ?></h2>
+
+<div class="bio-c">
+	<div class="bio" id="bio"><?php if ($lib['about_lib']) echo $lib['about_lib'] ?></div>
+	<?php if ($own) include $frontTpl . 'edit-bio.phtml' ?>
+
+</div>
+<script>
+
+</script>

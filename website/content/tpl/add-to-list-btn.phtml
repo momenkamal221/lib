@@ -1,0 +1,11 @@
+<?php 
+$btnID = 'add-book'.$book['book_id'].'-bs'.$list['list_id'];
+ ?>
+<li id="<?php echo $btnID?>"><?php echo $list['title']; ?></li>
+<script>
+	//this fun in header.js
+	reqAddToList(
+		<?php echo $list['list_id'];?>,
+		<?php echo $book['book_id']; ?>,
+		'<?php echo $btnID?>');
+</script>

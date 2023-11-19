@@ -1,0 +1,125 @@
+<?php
+if (isset($_GET['bookid'])) {
+	$bookID = $_GET['bookid'];
+	$bookIDset = true;
+	$stores = getStores($conn, $_GET['bookid']);
+} else {
+	$bookIDset = false;
+}
+?>
+<main style="margin-top: 240px;">
+	<form action="processes.php" method="post" enctype="multipart/form-data" class="add-book-form">
+		<input type="hidden" name="lib_id" value="<?php echo $_GET['id'] ?>">
+		<?php if ($bookIDset) {
+			$book = getBook($conn, $bookID);
+			echo '<input type="hidden" name="book_id" value="' . $bookID . '">';
+		} ?>
+		<input type="hidden" name="process" value="10">
+		<div>
+			<label for="title" class="label">Title</label>
+			<input type="text" name="title" id="title" class="intxt" value="<?php if ($bookIDset) {
+																				echo $book['title'];
+																			} ?>" />
+		</div>
+		<div>
+			<label for="description" class="label">Description</label>
+			<textarea rows="5" cols="60" name="description" class="txt-area intxt" placeholder="optional" value="<?php if ($bookIDset) {
+																														echo $book['_description'];
+																													} ?>"></textarea>
+		</div>
+		<div>
+			<label for="pages" class="label">Number of pages</label>
+			<input type="number" name="pages" class="intxt" id="pages" placeholder="optional" value="<?php if ($bookIDset) {
+																											echo ($book['pages']) ?  $book['pages'] : "";
+																										} ?>" />
+		</div>
+		<div>
+			<label for="publisher" class="label">Publisher</label>
+			<input type="text" name="publisher" id="publisher" class="intxt" placeholder="optional" value="<?php if ($bookIDset) {
+																												echo $book['publisher'];
+																											} ?>" />
+		</div>
+		<div>
+			<label for="author" class="label">Author</label>
+			<input type="text" name="author" id="author" class="intxt" placeholder="optional" value="<?php if ($bookIDset) {
+																												echo $book['author'];
+																											} ?>" />
+		</div>
+		<div>
+			<label for="language" class="label">Language</label>
+			<input type="text" name="language" id="language" class="intxt" placeholder="optional" value="<?php if ($bookIDset) {
+																												echo $book['_language'];
+																											} ?>" />
+		</div>
+		<div>
+			<label for="cover" class="label">Book cover</label>
+			<input type="file" name="cover" id="cover" class="intxt" />
+		</div>
+		<div>
+			<label for="book" class="label">Book <span class="note">optional *it could be a sample of your book</span></label>
+			<input type="file" name="book" id="book" class="intxt" />
+		</div>
+		<h3 class="add-book-form__add-stores">
+			Stores <span id="addStoreBtn">+</span>
+		</h3>
+		<div class="add-book-form__stores" id="storesSec">
+			<?php
+			$counter = 1;
+			if ($bookIDset && $stores) {
+				foreach ($stores as $store) {
+					include $frontTpl . 'store.phtml';
+					$counter++;
+				}
+			}
+			?>
+		</div>
+		<div class="rm-store" id="rmStoreBtn"></div>
+		<div class="add-book-form_err" id="addBookErr"></div>
+		<div>
+			<input type="submit" id="publishBookBtn" class="intxt publish" />
+		</div>
+	</form>
+</main>
+<script>
+	function getLastStoreNo() {
+		const lastStore = storesSec.lastElementChild;
+		if (lastStore) {
+			return parseInt(lastStore.id.split('-')[1]);
+		}
+		return false;
+	}
+
+	function addStore() {
+		lastStoreNo = getLastStoreNo();
+		if (!lastStoreNo) {
+			lastStoreNo = 0;
+		}
+		nextStoreNo = lastStoreNo + 1;
+		storeHTML = `
+		<div class="add-book-form__store" id="storeNO-${nextStoreNo}">
+			<label for="store-${nextStoreNo}" class="label">Store: </label>
+			<input type="text" name="store-${nextStoreNo}" id="store-${nextStoreNo}" class="intxt"/>
+			<label for="link-${nextStoreNo}" class="label">Link: </label>
+			<input type="text" name="link-${nextStoreNo}" id="link-${nextStoreNo}" class="intxt"/>
+		</div>
+		`;
+		storeHTML = new DOMParser().parseFromString(storeHTML, "text/html").body
+			.firstChild;
+		storesSec.appendChild(storeHTML);
+	}
+
+	function rmStore() {
+		lastStoreNo = getLastStoreNo();
+		if (lastStoreNo) {
+			document.getElementById(`storeNO-${lastStoreNo}`).remove();
+		}
+	}
+	const storesSec = document.getElementById('storesSec');
+	const addStoreBtn = document.getElementById('addStoreBtn');
+	const rmStoreBtn = document.getElementById('rmStoreBtn');
+	rmStoreBtn.addEventListener('click', rmStore)
+	addStoreBtn.addEventListener('click', addStore);
+	if (get('err')) {
+		document.getElementById('addBookErr').innerText = 'Please make sure to attach the book cover and specify title for your book';
+	}
+</script>

@@ -1,0 +1,46 @@
+<?php
+	$libName=getLibTitle($conn,$notification['lib_id']);
+	$action=$notification['_action'];
+	$notficationID=$notification['noti_id'];
+	$content='';
+	if($action=='book'){
+		$book=getBook($conn,$notification['book_id']);
+		$bookTitle=$book['title'];
+		$content = 'has published a new book called ' . $bookTitle;
+		$notificationLink='book.php?id='.$notification['book_id'];
+		
+	}elseif($action=='comment'){
+		$content = 'has commented to your post';
+		$notificationLink='post.php?post='.$notification['post_id'].'&comment='.$notification['comment_id'];
+	}elseif($action=='post'){
+		$content = 'has posted new post';
+		$notificationLink='post.php?post='.$notification['post_id'];
+	}elseif($action=='msg_send'){
+		$content = 'sent you a message';
+		$notificationLink='library.php?id='.$notification['lib_id'];
+
+	}elseif($action=='like_post'){
+		$content = 'has liked your post';
+		$notificationLink='post.php?post='.$notification['post_id'];
+
+	}
+?>
+	<a <?php 
+	if($action=='msg_send') echo 'onClick=\'return notification_openChat('.$notification['lib_id'].')\'';
+	?> href="<?php  echo $notificationLink?>" class="notif-slab" id="<?php  echo 'noti-'.$notficationID?>">
+		<div class="notif-img">
+			<img src="<?php
+						echo $libPics . getLibPic($conn,$notification['lib_id']);
+						?>" alt="">
+		</div>
+
+			<p class="notif">
+				<span class="notif-name">
+					<?php echo $libName ?>
+				</span>
+				<span class="notif-content">
+				<?php echo $content ?>
+				</span>
+			</p>
+
+	</a>
