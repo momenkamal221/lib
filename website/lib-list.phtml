@@ -1,0 +1,20 @@
+<?php
+$readingLibs = getReadingList($conn);
+?>
+<aside class="lib-list hide-list display" id="libList">
+	<div class="lib-list-frame" id="listFrame">
+		<div class="list" id="list">
+			<?php 
+			if($readingLibs){
+				foreach($readingLibs as $lib){
+					if(own($conn,$lib['lib_id'])&&$lib['main']==1){
+						continue;
+					}
+					include $frontTpl . 'lib-list.phtml';
+				}
+			}
+			?>
+		</div>
+	</div>
+	<div class="trans" id="trans1"></div>
+</aside>

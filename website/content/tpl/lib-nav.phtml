@@ -1,0 +1,18 @@
+<?php
+$libStyle = '';
+$communityStyle = '';
+if (!isset($_GET['page'])) {
+	$libStyle = 'style="border-bottom: 5px solid var(--brown);"';
+} elseif ($_GET['page'] == 'community') {
+	$communityStyle = 'style="border-bottom: 5px solid var(--brown);"';
+}
+
+
+?>
+<div class="lib-nav">
+	<ul class="nav-menu">
+		<li <?php echo $libStyle ?>><a href="library.php?id=<?php echo $_GET['id'] ?>">Library</a></li>
+		<div>|</div>
+		<li <?php echo $communityStyle ?>><a href="library.php?id=<?php echo $_GET['id'] ?>&page=community">Community</a></li>
+	</ul>
+</div>

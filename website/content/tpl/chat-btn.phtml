@@ -1,0 +1,13 @@
+<?php
+$chatBtnID='chatBtn-'.$lib['lib_id'];
+?>
+<div class="chat-btn-c" id="<?php echo $chatBtnID ?>">
+		<div class="chat-btn-p1">
+		<div class="chat-btn-p2"></div>
+	</div>
+</div>
+<script>
+	ChatBtn='<?php echo $chatBtnID ?>';
+	ChatBtn = document.getElementById(ChatBtn);
+	ChatBtn.addEventListener('click',openChatL);
+</script>

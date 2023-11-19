@@ -1,0 +1,9 @@
+<img src="<?php echo $styleImg . 'edit.svg'; ?>" alt="" class="edit-pic" id="editPic">
+
+			<form action='processes.php' method="POST" enctype="multipart/form-data" class="edit-form display" id="editPicForm">
+				<input type="file" name="lib-pic" id="lib-pic" style="display:none"/>
+				<label for="lib-pic" class="select-file-btn">Select image</label>
+				<button type="submit" name="img" value="lib-pic"> <img src="<?php echo $styleImg . 'check-mark.svg'; ?>" alt=""></button>
+				<input type="hidden" name="lib-id" value="<?php echo $libID ?>" />
+				<input type="hidden" name="process" value="6" />
+			</form>

@@ -1,0 +1,16 @@
+<li class="book-menu__add-to">
+	Add to
+	<ol id="add-to-<?php echo $list['list_id']; ?>" class="book-menu book-menu__add-to-menu">
+		<?php
+		if ($lists && !$listedBook) {
+			foreach ($lists as $list) {
+				include $frontTpl . 'add-to-list-btn.phtml';
+			}
+		} else {
+			echo '<li style="text-align:center"> You have no bookshelves';
+		}
+		?>
+	</ol>
+</li>
+<script>
+</script>

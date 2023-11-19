@@ -1,0 +1,17 @@
+<?php
+$keywords=cleanInput($_GET['q']);
+$keywords=explode('%',$keywords);
+$libs = findLib($conn,$keywords);
+?>
+<main style="margin-top: 240px;">
+	<div class="search-res">
+		<?php 
+		if($libs)
+		foreach($libs as $lib){
+			include $frontTpl . 'search-result-libs.phtml';
+		}else{
+			echo "<div class=\"no-libs-found\">No libraries found</div>";
+		}
+		?>
+	</div>
+</main>

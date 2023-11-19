@@ -1,0 +1,17 @@
+<script>
+		currentLibID = <?php echo getMainLib() ?>;
+</script>
+<main style="margin-top: 160px;">
+	<h3 class="add-post-btn"><div id="addPostBtn">Post</div></h3>
+	<div class="root" id="root">
+	</div>
+	<div id='morePosts'></div>
+</main>
+<script src="<?php echo $js . 'post.js' ?>"></script>
+<script>
+	const root = document.getElementById("root");
+	const postContainer=root;
+	const addPostBtn = document.getElementById('addPostBtn');
+	addPostBtn.addEventListener('click',()=>togglePost());
+	getLastPosts();
+</script>

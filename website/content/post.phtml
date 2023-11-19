@@ -1,0 +1,74 @@
+<?php
+$postID = $_GET['post'];
+$libID = getPostedLibID($conn, $postID);
+$libPic = getLibPic($conn, $libID);
+$libTitle = getLibTitle($conn, $libID);
+$post = getPost($conn, $postID);
+$isLiked = isPostLiked($conn, $postID, $_SESSION['main_lib_id']);
+if (!$post['book_id']) {
+	$post['book_id'] = 'null';
+}
+if ($isLiked) {
+	$isLiked = 'true';
+} else {
+	$isLiked = 'false';
+}
+
+if (isset($_GET['comment'])) {
+	$commentID = $_GET['comment'];
+	if (!isCommentInPost($conn, $postID, $commentID)) {
+		exit();
+	}
+	$comment=getComment($conn,$commentID);
+}else{
+	//i had to set these values so i do not get errors for undefined vars
+	$commentID=0;
+	$comment['comment']=0;
+	$comment['_date']=0;
+}
+?>
+<main style="margin-top: 240px;">
+	<div class="root" id="postC">
+
+	</div>
+</main>
+<script src="<?php echo $js . 'post.js' ?>"></script>
+<script>
+	const postContainer = document.getElementById('postC');
+	createPost(
+		<?php echo $postID ?>,
+		<?php echo $libID ?>,
+		<?php echo $post['book_id'] ?>,
+		'<?php echo $libPic ?>',
+		'<?php echo $post['content'] ?>',
+		<?php echo $post['likes_count'] ?>,
+		<?php echo $isLiked ?>,
+		'<?php echo $libTitle ?>',
+		<?php echo $post['_date'] ?>,
+		true
+	);
+
+	if (get('comment')) {
+		const commentSlab = document.getElementById(`comment-slab-<?php echo $postID ?>`)
+		const postComments = document.getElementById(`post-comments-<?php echo $postID ?>`); //the container of the comments
+		const commentBtn = document.getElementById(`post-comment-btn-<?php echo $postID ?>`);
+		document.getElementById(`comment-slab-<?php echo $postID ?>`).classList.toggle("display");
+		createComment(
+			<?php echo $postID ?>,
+			<?php echo $libID ?>,
+			'<?php echo $libTitle ?>',
+			'<?php echo $libPic ?>',
+			postComments,
+			<?php echo $commentID ?>,
+			'<?php echo $comment['comment'] ?>',
+			true,
+			<?php echo $comment['_date'] ?>
+		)
+
+		getPreComments(
+			<?php echo $postID ?>,
+			postComments,
+			commentSlab
+		)
+	}
+</script>

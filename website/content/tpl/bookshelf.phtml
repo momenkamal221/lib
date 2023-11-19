@@ -1,0 +1,43 @@
+<?php
+$listID=$list['list_id'];
+$listedBooks = getListedBooks($conn, $listID);
+$rmListBtnID='bsrmbtn-'.$list['list_id'];
+?>
+<div class="bs-c">
+	<div class="bs-header">
+		<h2 class="bs-h2">
+			<?php 
+			echo '<a href="./bs.php?id='.$listID.'">'.$list['title'].'</a>'; 
+			if($own) include $frontTpl . 'rm-bs-btn.phtml'
+			?>
+			
+		</h2>
+	</div>
+	<div class="bs-frame">
+		<div class="bs-arrow" id="lArrow-<?php echo $list['list_id']; ?>">
+			<img src="<?php echo $styleImg . 'arrow.svg' ?>" class="l-arrow" alt="">
+			<div class="blank"></div>
+		</div>
+		<div class="bs" id="bs-<?php echo $list['list_id']; ?>">
+			<?php
+			if ($listedBooks) {
+				$listedBook = true;
+				foreach ($listedBooks as $book) {
+					include $frontTpl . 'book.phtml';
+				}
+			}
+			?>
+			<div class="no-more-books">No more books</div>
+		</div>
+		<div class="bs-arrow" id="rArrow-<?php echo $list['list_id']; ?>">
+			<img src="<?php echo $styleImg . 'arrow.svg' ?>" class="r-arrow" alt="">
+			<div class="blank"></div>
+		</div>
+	</div>
+</div>
+<script>
+	
+	bsScroll('<?php echo 'bs-'.$list['list_id']?>',
+	'<?php echo 'rArrow-'. $list['list_id']; ?>',
+	'<?php echo 'lArrow-'.$list['list_id']; ?>');
+</script>

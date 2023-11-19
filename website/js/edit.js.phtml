@@ -1,0 +1,58 @@
+<script>
+	document.getElementById('editCover').addEventListener('click', () => {
+		const editCoverForm = document.getElementById('editCoverForm');
+		editCoverForm.classList.toggle('display');
+
+	});
+	document.getElementById('editPic').addEventListener('click', () => {
+		const editCoverForm = document.getElementById('editPicForm');
+		editCoverForm.classList.toggle('display');
+
+	});
+	document.addEventListener("click", (eve) => {
+		if (editPic) {
+			if (eve.target != editPicForm && eve.target.parentElement != editPicForm && eve.target != editPic && !editPicForm.classList.contains("display")) {
+				editPicForm.classList.add('display');
+			}
+		}
+		if (editPic) {
+			if (eve.target != editCoverForm && eve.target.parentElement != editCoverForm && eve.target != editCover && !editCoverForm.classList.contains("display")) {
+				editCoverForm.classList.add('display');
+			}
+		}
+	})
+	const editBio = document.getElementById('editBio');
+	const bio=document.getElementById('bio');
+	const editBioBtn = document.getElementById('editBioBtn');
+	let bioEdit=false;
+	editBio.addEventListener('click',()=>{
+		if(!bioEdit){
+			bio.setAttribute('contenteditable','');
+			bio.focus();
+			editBioBtn.classList.remove('display');
+			bio.style.border='1px solid black';
+			bioEdit=true;
+		}else{
+			bio.removeAttribute('contenteditable');
+			editBioBtn.classList.add('display');
+			bio.removeAttribute('style');
+			bioEdit=false;
+		}
+	})
+	editBioBtn.addEventListener('click', ()=>{
+		post(
+			'processes.php',
+			{
+				process:19,
+				lib_id:currentLibID,
+				bio:bio.innerText
+			},
+			()=>{
+				bio.removeAttribute('contenteditable');
+				editBioBtn.classList.add('display');
+				bio.removeAttribute('style');
+				bioEdit=false;
+			}
+		);
+	})
+</script>

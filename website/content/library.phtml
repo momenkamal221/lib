@@ -1,0 +1,132 @@
+<?php
+$libID = $_GET['id'];
+$lib = getLib($conn, $libID);
+$libTitle = $lib['lib_title'];
+$libPic = $libPics . $lib['lib_pic'];
+$libCover = $libCovers . $lib['lib_cover'];
+$allBooks = getAllBooks($conn, $libID, 'book_id,cover,book_location');
+$lists = getLists($conn, $libID);
+$own = own($conn, $libID);
+$page = 'library';
+
+?>
+<script>
+	currentLibID = <?php echo $libID ?>;
+</script>
+<main style="margin-top: 240px;">
+	<?php include $frontTpl . 'library-header.phtml' ?>
+	<div class="bs-c">
+		<div class="bs-header">
+			<h2 class="bs-h2">
+				<?php echo ($own) ? 'Your' : $libTitle . '\'s' ?> general bookshelf
+				<?php if ($own) echo '<div class="bs-btn">
+					<a href="publishbook.php?id=' . $libID . '">add book</a>
+					</div>' ?>
+			</h2>
+		</div>
+		<div class="bs-frame">
+			<div class="bs-arrow" id="lArrow">
+				<img src="<?php echo $styleImg . 'arrow.svg' ?>" class="l-arrow" alt="">
+				<div class="blank"></div>
+			</div>
+			<div class="bs" id="mainBs">
+				<?php
+				if ($allBooks) {
+					$listedBook = false;
+					foreach ($allBooks as $book) {
+						$list['list_id'] = 0;
+						include $frontTpl . 'book.phtml';
+					}
+				}
+				?>
+				<div class="no-more-books">No more books</div>
+			</div>
+			<div class="bs-arrow" id="rArrow">
+				<img src="<?php echo $styleImg . 'arrow.svg' ?>" class="r-arrow" alt="">
+				<div class="blank"></div>
+			</div>
+		</div>
+	</div>
+	<h3><?php echo ($own) ? 'Your ' : $libTitle . '\'s' ?>bookshelves
+		<div class="add-bookshelf">
+			<?php if ($own) echo '<div class="add-bookshelf-btn" id="addBookshelfBtn">
+				add bookshelf
+			</div>' ?>
+		</div>
+	</h3>
+	<?php
+	if ($lists) {
+		foreach ($lists as $list) {
+			include $frontTpl . 'bookshelf.phtml';
+		}
+	}
+	?>
+	<div class="add-bookshelf-form-c display" id="addBookshelfForm">
+		<form class="add-bookshelf-form" action="none">
+			<div id="closeAddBS">X</div>
+			<input id="addLibTitle" type="text" name="title" class="intxt" placeholder="Title" aria-label="Title">
+			<div class="wrapper">
+				<div class="content">
+					<p>Press enter or add your bookshelf categories</p>
+					<ul id="enteredCategories">
+						<input id="enterCategory" type="text" spellcheck="false" />
+					</ul>
+					<div class="categories-c" id="categoriesC">
+						
+						</div>
+					</div>
+					<div class="details">
+						<p><span id="NOCategories">10</span> categories are remaining</p>
+						<button type="button">Remove All</button>
+					</div>
+				</div>
+				<button id="addLibBtn" class="add-bookshelf-btn" type="button">Add</button>
+			</form>
+			<div class="add-bookshelf-form-trans" id="addBookshelfTrans"></div>
+	</div>
+</main>
+<script>
+	function displayAddBookshelfForm() {
+		addBookshelfForm.classList.toggle('display')
+	}
+	bsScroll('mainBs', 'rArrow', 'lArrow');
+	const addBookshelfBtn = document.getElementById('addBookshelfBtn');
+	const addBookshelfForm = document.getElementById('addBookshelfForm');
+	const addBookshelfTrans = document.getElementById('addBookshelfTrans');
+	const addLibTitle=document.getElementById('addLibTitle');
+	const closeAddBS = document.getElementById('closeAddBS');
+	const addLibBtn=document.getElementById('addLibBtn');
+	if (addBookshelfBtn) {
+		addBookshelfBtn.addEventListener('click', displayAddBookshelfForm);
+		addBookshelfTrans.addEventListener('click', displayAddBookshelfForm);
+		closeAddBS.addEventListener('click', displayAddBookshelfForm);
+
+	}
+	document.addEventListener('click',()=>{
+		if(document.activeElement==input){
+			ul.style.border= '2px #946401 solid';
+		}else{
+			ul.style.border='';
+		}
+	})
+	addLibBtn.addEventListener('click',()=>{
+		post(
+			'processes.php',
+			{
+				process:11,
+				title:addLibTitle.value,
+				lib_id:currentLibID,
+				categories:tags
+			},
+			()=>{
+				location.reload();
+			}
+		)
+	})
+</script>
+<script src="<?php echo $js.'category.js'?>"></script>
+<?php
+if ($own) {
+	include_once $js . 'edit.js.phtml';
+}
+?>

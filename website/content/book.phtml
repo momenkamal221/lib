@@ -1,0 +1,42 @@
+<?php
+$book=getBook($conn,$_GET['id']);
+$libPic=$libPics . getLibPic($conn,$book['lib_id']);
+$libTitle=getLibTitle($conn,$book['lib_id']);
+$cover=$bookCover . $book['cover'];
+?>
+<main style="margin-top: 160px;">
+		<div class="book-page">
+			<div>
+				<a href="library.php?id=<?php echo $book['lib_id']?>" class="b-lib">
+					<img class="post__lib-img" src="<?php echo $libPic ?>" alt="library picture" />
+					<div class="post__name"><?php echo $libTitle ?></div>
+				</a>
+			</div>
+			<h3><?php echo $book['title']?></h3>
+			<div class="b-cov-n-des">
+				<img class="b-cover" src="<?php echo $cover ?>" alt="">
+				<div class="b-des"><?php echo $book['_description'] ?></div>
+			</div>
+		</div>
+		<table class="b-info">
+			<tbody>
+				<tr>
+					<td>Author:</td>
+					<td><?php echo $book['author'] ?></td>
+				</tr>
+				<tr>
+					<td>Publisher</td>
+					<td><?php echo $book['publisher'] ?></td>
+				</tr>
+				<tr>
+					<td>Pages</td>
+					<td><?php echo $book['pages'] ?></td>
+				</tr>
+				<tr>
+					<td>language</td>
+					<td><?php echo $book['_language'] ?></td>
+				</tr>
+			</tbody>
+		</table>
+
+</main>

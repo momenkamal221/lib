@@ -1,0 +1,32 @@
+<?php
+$libID = $_GET['id'];
+$lib = getLib($conn, $libID);
+$libTitle = $lib['lib_title'];
+$libPic = $libPics . $lib['lib_pic'];
+$libCover = $libCovers . $lib['lib_cover'];
+$own = own($conn, $libID);
+$page = 'community';
+?>
+<script>
+	currentLibID = <?php echo $libID ?>;
+</script>
+<main style="margin-top: 240px;">
+<?php include $frontTpl . 'library-header.phtml' ?>
+<?php if($own)echo '<h3 class="add-post-btn"><div id="addPostBtn">Post</div></h3>'?>
+<div class="community" id="community"></div>
+<div id='morePosts'></div>
+</main>
+<script src="<?php echo $js . 'post.js' ?>"></script>
+<script>
+	const community = document.getElementById("community");
+	const postContainer=community;
+	const addPostBtn = document.getElementById('addPostBtn');
+	if(addPostBtn)
+	addPostBtn.addEventListener('click',()=>togglePost());
+	getLastPosts();
+</script>
+<?php
+if ($own) {
+	include_once $js . 'edit.js.phtml';
+}
+?>

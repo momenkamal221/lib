@@ -1,0 +1,14 @@
+<?php
+$storeID=$store['store_id'];
+$link=$store['link'];
+$_store=$store['store'];
+$_storeID='storeNO-'.$counter;
+$storeNumber='store-' . $counter;
+$linkNumber='link-' .$counter;
+?>
+<div class="add-book-form__store" id="<?php echo $_storeID ?>">
+	<label for="<?php echo $storeNumber?>" class="label">Store: </label>
+	<input type="text" name="<?php echo $storeNumber?>" id="<?php echo $storeNumber?>" class="intxt" value="<?php echo $_store?>"/>
+	<label for="<?php echo $linkNumber?>" class="label">Link: </label>
+	<input type="text" name="<?php echo $linkNumber?>" id="<?php echo $linkNumber?>" class="intxt" value="<?php echo $link?>"/>
+</div>

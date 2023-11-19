@@ -1,0 +1,11 @@
+<div class="search-res-lib-c">
+	<a class="search-res-lib" href="library.php?id=<?php echo $lib['lib_id'] ?>">
+		<div class="search-res-lib-pic-c"><img src="<?php echo $libPics . $lib['lib_pic'] ?>" alt=""></div>
+		<div class="search-res-lib-info">
+			<div class="search-res-lib-title"><?php echo $lib['lib_title'] ?></div>
+			<div><?php echo $lib['reading_count'] ?> reading</div>
+			<div><?php echo $lib['readers_count'] ?> readers</div>
+		</div>
+	</a>
+	<div class="search-res-lib-bio"><?php echo $lib['about_lib'] ?></div>
+</div>
